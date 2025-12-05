@@ -1,17 +1,27 @@
 import streamlit as st
+from ARSLM.ARSLM import ARSLM
 
-st.set_page_config(page_title="ARSLM MVP", page_icon="🤖")
+st.set_page_config(
+    page_title="ARSLM AI",
+    page_icon="🤖",
+    layout="centered"
+)
 
-st.title("🤖 ARSLM – Version Test MVP")
+bot = ARSLM()
 
-st.write("Bienvenue sur le test Streamlit MVP !")
+st.header("🤖 ARSLM — AI MVP Ready for Investors")
+st.write("Un moteur d’intelligence artificielle léger, modulaire, et extensible.")
 
-user_input = st.text_input("Pose une question :")
+user_input = st.text_input("💬 Posez une question au modèle")
 
 if st.button("Envoyer"):
-    if user_input.strip() == "":
-        st.warning("Merci d'entrer une question.")
-    else:
-        st.success("Réponse (test) :")
-        st.write(f"ARSLM a reçu : **{user_input}**")
-        st.write("⚙️ Le système fonctionne correctement.")
+    response = bot.chat(user_input)
+    st.success(response)
+
+st.markdown("### 📜 Historique")
+for item in bot.get_history():
+    st.write(f"**Vous :** {item['user']}")
+    st.write(f"**ARSLM :** {item['bot']}")
+    st.write("---")
+
+st.caption("© 2025 ARSLM • MVP Demonstration Version")
