@@ -1,0 +1,8 @@
+ARSLM_project/
+│
+├─ ARSLM/
+│   ├─ __init__.py
+│   └─ ARSLM.py
+│
+├─ main.py
+└─ requirements.txt
