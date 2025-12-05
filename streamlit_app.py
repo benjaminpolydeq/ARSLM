@@ -1,6 +1,6 @@
-import streamlit as st
-from ARSLM import ARSLM
-
+# import torch  # désactivé
+# import torch.nn as nn  # désactivé
+import random
 # Configuration de la page
 st.set_page_config(page_title="ARSLM Prototype", page_icon="🤖", layout="centered")
 st.title("🤖 ARSLM — Prototype LLM")
