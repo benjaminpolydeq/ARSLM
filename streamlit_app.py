@@ -1,85 +1,69 @@
 # streamlit_app.py
 import streamlit as st
-from microllm_core import MicroLLMCore
+from arslm import ARSLM
 from datetime import datetime
 
-st.set_page_config(page_title="MicroLLM Studio", layout="wide")
+st.set_page_config(page_title="ARSLM Chat", layout="wide")
 
-# --- Sidebar / Configuration
-with st.sidebar:
-    st.header("MicroLLM Studio")
-    st.write("Prototype | Démo légère")
-    mode = st.radio("Mode", ["MVP (léger)", "Studio (UI complète)"])
-    model_name = st.selectbox("Modèle", ["MicroLLM-lite"], index=0)
-    show_investor = st.checkbox("Afficher la proposition investisseur", value=False)
-    st.markdown("---")
-    st.caption("Déploye sur Streamlit Cloud : repository `TON_PSEUDO/micro-llm`, main file `streamlit_app.py`")
+st.title("🧠 ARSLM Chatbot")
+st.write("Chat interactif avec ARSLM (Adaptive Reasoning Semantic Language Model)")
 
-# --- Initialize core and session state
-if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {"role": "system", "text": "Bienvenue sur MicroLLM Studio — demo légère."}
-    ]
+# ---------------------------
+# 1️⃣ Initialisation session
+# ---------------------------
+if "arslm_session" not in st.session_state:
+    st.session_state.arslm_session = ARSLM(use_custom_model=True)
+if "history" not in st.session_state:
+    st.session_state.history = []
 
-core = MicroLLMCore(name=model_name)
+# ---------------------------
+# 2️⃣ Reset bouton
+# ---------------------------
+if st.button("🔄 Reset Conversation"):
+    st.session_state.arslm_session.clear_history()
+    st.session_state.history = []
+    st.experimental_rerun()
 
-# --- Main layout
-col1, col2 = st.columns([3, 1]) if mode == "Studio (UI complète)" else st.columns([1, 1])
-
-with col1:
-    st.title("💬 MicroLLM Chat")
-    st.write("Un prototype de chat léger. Cette version n'utilise pas de modèles lourds (demo).")
-    # Message display
-    for msg in st.session_state.messages:
-        role = msg.get("role", "user")
-        txt = msg.get("text", "")
-        ts = msg.get("time", "")
-        if role == "user":
-            st.markdown(f"**Vous** • {ts}")
-            st.info(txt)
-        elif role == "assistant":
-            st.markdown(f"**MicroLLM** • {ts}")
-            st.success(txt)
-        else:
-            st.markdown(f"_{txt}_")
-
-    # Input
-    user_input = st.text_area("Écris un message", height=120)
-    col_send, col_clear = st.columns([1,1])
-    with col_send:
-        if st.button("Envoyer"):
-            if user_input.strip():
-                now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
-                st.session_state.messages.append({"role":"user","text":user_input,"time":now})
-                # generate reply
-                out = core.generate_reply(user_input, st.session_state.messages)
-                now2 = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
-                st.session_state.messages.append({"role":"assistant","text":out["text"], "time":now2, "meta":out["meta"]})
-                # clear input by rerun
-                st.experimental_rerun()
-    with col_clear:
-        if st.button("Effacer la conversation"):
-            st.session_state.messages = [{"role":"system","text":"Conversation réinitialisée."}]
-            st.experimental_rerun()
-
-with col2:
-    st.header("🛠️ Contrôles")
-    st.write(f"Mode: **{mode}**")
-    st.write(f"Model: **{model_name}**")
-    if st.session_state.messages:
-        last = st.session_state.messages[-1]
-        if last.get("meta"):
-            st.markdown("**Dernière réponse — méta**")
-            st.json(last["meta"])
-    if show_investor:
+# ---------------------------
+# 3️⃣ Affichage historique
+# ---------------------------
+if st.session_state.history:
+    st.subheader("💬 Conversation")
+    for exchange in st.session_state.history:
+        st.markdown(f"**User:** {exchange['user']}")
+        st.markdown(f"**Assistant:** {exchange['assistant']}")
         st.markdown("---")
-        st.header("Proposition pour investisseurs")
-        try:
-            with open("INVESTOR_PROPOSAL.md", "r", encoding="utf-8") as f:
-                st.markdown(f.read())
-        except Exception:
-            st.info("Fichier INVESTOR_PROPOSAL.md non trouvé dans le repo.")
 
-# Footer
-st.markdown("---")
-st.caption("MicroLLM — Prototype. Pour production, connecter un vrai modèle (transformers/torch) et sécuriser l'accès.")
+# ---------------------------
+# 4️⃣ Input utilisateur
+# ---------------------------
+user_input = st.text_input("Entrez votre message:", key="input")
+
+if st.button("Envoyer") and user_input.strip():
+    with st.spinner("📝 Génération en cours..."):
+        # Générer réponse
+        assistant_response = st.session_state.arslm_session.generate(
+            prompt=user_input,
+            max_length=150,
+            temperature=0.7,
+            include_context=True
+        )
+        
+        # Mettre à jour historique
+        st.session_state.history.append({
+            "user": user_input,
+            "assistant": assistant_response,
+            "timestamp": datetime.now().isoformat()
+        })
+        
+        # Afficher la dernière réponse
+        st.markdown(f"**Assistant:** {assistant_response}")
+        
+        # Vider champ input
+        st.session_state.input = ""
+
+# ---------------------------
+# 5️⃣ Information basique
+# ---------------------------
+st.sidebar.header("ℹ️ Info")
+st.sidebar.write(f"Nombre d'échanges: {len(st.session_state.history)}")
