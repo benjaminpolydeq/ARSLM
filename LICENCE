@@ -1,0 +1,297 @@
+# PROPRIETARY SOFTWARE LICENSE AGREEMENT
+
+## ARSLM (Adaptive Reasoning Semantic Language Model)
+
+**Copyright © 2025 BENJAMIN AMAAD KAMA. All Rights Reserved.**
+
+**Effective Date:** January 1, 2025  
+**Version:** 1.0
+
+---
+
+## 1. DEFINITIONS
+
+**"Software"** refers to ARSLM (Adaptive Reasoning Semantic Language Model), including all source code, object code, documentation, interfaces, content, fonts, and any derivative works thereof.
+
+**"Licensor"** means BENJAMIN AMAAD KAMA, the copyright holder and owner of the Software.
+
+**"Licensee"** or **"You"** means the individual or legal entity obtaining access to the Software.
+
+**"Commercial Use"** means any use of the Software for commercial advantage or monetary compensation.
+
+**"Internal Use"** means use of the Software within your organization for your own internal business purposes.
+
+---
+
+## 2. GRANT OF LICENSE
+
+### 2.1 Evaluation License (Free)
+
+Subject to the terms of this Agreement, Licensor grants You a limited, non-exclusive, non-transferable, revocable license to:
+
+- ✅ Download and install the Software for evaluation purposes
+- ✅ Use the Software for personal, non-commercial testing and development
+- ✅ Fork the repository for the purpose of submitting contributions (pull requests)
+
+**Duration:** 30 days from first installation  
+**Limitations:** No commercial use, no redistribution, no modification without approval
+
+### 2.2 Internal Use License (Paid)
+
+Upon payment of applicable fees, Licensor grants You a limited, non-exclusive, non-transferable license to:
+
+- ✅ Install and use the Software within your organization
+- ✅ Access all features and updates during the subscription period
+- ✅ Receive technical support as per your subscription tier
+
+**Duration:** Term of subscription (monthly or annual)  
+**Limitations:** No redistribution, no white-labeling, no sublicensing
+
+### 2.3 Commercial License (Custom)
+
+For commercial deployment, resale, or white-label use, a separate Commercial License Agreement is required. Contact licensing@benjokama.fr for details.
+
+---
+
+## 3. RESTRICTIONS
+
+You are explicitly **prohibited** from:
+
+### 3.1 Distribution & Redistribution
+- ❌ Distributing, sublicensing, selling, or renting the Software
+- ❌ Making the Software available on public repositories (except the official one)
+- ❌ Providing the Software as a service (SaaS) without a Commercial License
+- ❌ Including the Software in other software distributions
+
+### 3.2 Modification & Derivative Works
+- ❌ Modifying, adapting, or creating derivative works without written consent
+- ❌ Removing or altering any proprietary notices, labels, or marks
+- ❌ Reverse engineering, decompiling, or disassembling the Software
+- ❌ Extracting source code or algorithms for use in other projects
+
+### 3.3 Commercial Activities
+- ❌ Using the Software for commercial purposes without a paid license
+- ❌ Offering consulting services based on the Software without authorization
+- ❌ Creating competing products based on the Software
+- ❌ Training AI models using the Software's code or outputs
+
+### 3.4 Prohibited Uses
+- ❌ Using the Software for illegal activities
+- ❌ Using the Software to violate privacy or data protection laws
+- ❌ Using the Software to generate harmful, abusive, or discriminatory content
+- ❌ Using the Software in safety-critical systems without explicit approval
+
+---
+
+## 4. INTELLECTUAL PROPERTY RIGHTS
+
+### 4.1 Ownership
+
+The Software is licensed, not sold. Licensor retains all right, title, and interest in and to the Software, including all intellectual property rights. This Agreement does not grant You any rights to trademarks, service marks, or trade names of the Licensor.
+
+### 4.2 Contributions
+
+If You submit contributions (bug fixes, features, documentation) to the Software:
+
+- You grant Licensor a perpetual, worldwide, royalty-free license to use, modify, and distribute Your contributions
+- You represent that You have the right to grant such license
+- Licensor may choose to accept or reject contributions at its sole discretion
+- Accepted contributions become part of the Software under this license
+
+### 4.3 Third-Party Components
+
+The Software may include open-source components licensed under their respective licenses (see THIRD-PARTY-NOTICES.md). Those components remain under their original licenses.
+
+---
+
+## 5. CONFIDENTIALITY
+
+### 5.1 Confidential Information
+
+The Software's source code, algorithms, architecture, and documentation constitute confidential and proprietary information of Licensor.
+
+### 5.2 Obligations
+
+You agree to:
+- Protect the confidentiality of the Software
+- Not disclose the Software to third parties without written consent
+- Use the same degree of care as You use for Your own confidential information
+- Limit access to the Software to employees/contractors who need to know
+
+---
+
+## 6. DATA & PRIVACY
+
+### 6.1 Data Ownership
+
+You retain all ownership rights to data processed by the Software. Licensor does not claim any rights to Your data.
+
+### 6.2 Telemetry
+
+The Software may collect anonymous usage statistics (error logs, feature usage) to improve the product. No personally identifiable information is collected without Your explicit consent.
+
+### 6.3 Compliance
+
+You are responsible for ensuring Your use of the Software complies with applicable data protection laws (GDPR, CCPA, etc.).
+
+---
+
+## 7. WARRANTIES & DISCLAIMERS
+
+### 7.1 Limited Warranty
+
+Licensor warrants that the Software will substantially conform to its documentation for 30 days from delivery (for paid licenses).
+
+### 7.2 DISCLAIMER
+
+**THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.**
+
+**LICENSOR DOES NOT WARRANT THAT:**
+- The Software will be error-free or uninterrupted
+- All defects will be corrected
+- The Software will meet Your requirements
+- The Software is suitable for production use in critical systems
+
+---
+
+## 8. LIMITATION OF LIABILITY
+
+### 8.1 Limitation
+
+**TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL LICENSOR BE LIABLE FOR:**
+
+- Any indirect, incidental, special, consequential, or punitive damages
+- Loss of profits, data, use, goodwill, or other intangible losses
+- Damages exceeding the fees paid by You in the 12 months preceding the claim
+
+### 8.2 Essential Purpose
+
+This limitation applies even if Licensor has been advised of the possibility of such damages and notwithstanding any failure of essential purpose of any remedy.
+
+### 8.3 Exceptions
+
+Some jurisdictions do not allow limitation of liability for certain types of damages. In such cases, Licensor's liability is limited to the greatest extent permitted by law.
+
+---
+
+## 9. SUBSCRIPTION & PAYMENT TERMS
+
+### 9.1 Fees
+
+License fees are as specified on the official website or in Your subscription agreement. All fees are non-refundable except as required by law.
+
+### 9.2 Payment
+
+Payment is due in advance. Failure to pay may result in suspension or termination of Your license.
+
+### 9.3 Taxes
+
+Fees exclude all taxes. You are responsible for all sales, use, and other taxes.
+
+### 9.4 Renewals
+
+Subscriptions auto-renew unless You cancel at least 7 days before the renewal date.
+
+---
+
+## 10. SUPPORT & UPDATES
+
+### 10.1 Support
+
+Support is provided according to Your subscription tier:
+- **Evaluation:** Community support only (GitHub Issues)
+- **Internal Use:** Email support (48-72h response time)
+- **Commercial:** Priority support with SLA
+
+### 10.2 Updates
+
+You are entitled to updates and bug fixes during Your subscription period. Major version upgrades may require additional fees.
+
+---
+
+## 11. TERM & TERMINATION
+
+### 11.1 Term
+
+This Agreement is effective upon Your access to the Software and continues until terminated.
+
+### 11.2 Termination by You
+
+You may terminate by ceasing all use and deleting all copies of the Software.
+
+### 11.3 Termination by Licensor
+
+Licensor may terminate immediately if You breach any term of this Agreement.
+
+### 11.4 Effect of Termination
+
+Upon termination:
+- All licenses granted to You terminate immediately
+- You must cease all use and delete all copies of the Software
+- Sections 4, 5, 7, 8, 12, and 13 survive termination
+
+---
+
+## 12. EXPORT COMPLIANCE
+
+You agree to comply with all export laws and restrictions of the country in which You are located. You shall not export or re-export the Software in violation of such laws.
+
+---
+
+## 13. GENERAL PROVISIONS
+
+### 13.1 Entire Agreement
+
+This Agreement constitutes the entire agreement between You and Licensor regarding the Software and supersedes all prior agreements.
+
+### 13.2 Amendments
+
+Licensor may modify this Agreement by posting a revised version. Continued use after modification constitutes acceptance.
+
+### 13.3 Severability
+
+If any provision is found invalid, the remainder of this Agreement continues in effect.
+
+### 13.4 Waiver
+
+Failure to enforce any right does not constitute a waiver of that right.
+
+### 13.5 Governing Law
+
+This Agreement is governed by the laws of Senegal, without regard to conflict of law principles.
+
+### 13.6 Dispute Resolution
+
+Disputes shall first be attempted to be resolved through good-faith negotiation. If unresolved within 30 days, disputes shall be resolved through binding arbitration in Dakar, Senegal.
+
+### 13.7 Assignment
+
+You may not assign this Agreement without Licensor's prior written consent. Licensor may assign this Agreement without restriction.
+
+---
+
+## 14. CONTACT INFORMATION
+
+For licensing inquiries, support, or general questions:
+
+**BENJAMIN AMAAD KAMA**
+
+📧 **Email:** benjokama@hotmail.fr  
+🌐 **Website:** https://github.com/benjaminpolydeq/ARSLM  
+📍 **Address:** Nguekhokh, Mbour, Senegal
+
+---
+
+## 15. ACKNOWLEDGMENT
+
+**BY DOWNLOADING, INSTALLING, ACCESSING, OR USING THE SOFTWARE, YOU ACKNOWLEDGE THAT YOU HAVE READ THIS AGREEMENT, UNDERSTAND IT, AND AGREE TO BE BOUND BY ITS TERMS AND CONDITIONS.**
+
+**IF YOU DO NOT AGREE TO THESE TERMS, DO NOT USE THE SOFTWARE.**
+
+---
+
+**END OF LICENSE AGREEMENT**
+
+**Version 1.0 - Effective January 1, 2025**
+
+Copyright © 2025 BENJAMIN AMAAD KAMA. All Rights Reserved.
