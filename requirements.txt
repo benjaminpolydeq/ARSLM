@@ -26,3 +26,9 @@ requests>=2.31.0
 pyyaml>=6.0
 python-dotenv>=1.0.0
 loguru>=0.7.0
+streamlit==1.26.1
+numpy==1.26.5
+pandas==2.1.1
+requests==2.32.0
+# autres dépendances de ton projet
+flake8==6.0.0  # version compatible avec Python 3.11
