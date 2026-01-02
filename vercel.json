@@ -1,7 +1,26 @@
 {
-  "buildCommand": "pip install --upgrade pip && pip install -r requirements.txt",
-  "devCommand": "streamlit run streamlit_app.py",
-  "installCommand": "pip install -r requirements.txt",
-  "framework": null,
-  "outputDirectory": "."
+  "version": 3,
+  "name": "arslm-streamlit",
+  "builds": [
+    {
+      "src": "apps/streamlit/requirements.txt",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.12"
+      }
+    },
+    {
+      "src": "apps/streamlit/streamlit_app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "apps/streamlit/streamlit_app.py"
+    }
+  ],
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  }
 }
