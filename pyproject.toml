@@ -5,222 +5,52 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "arslm"
 version = "0.1.0"
-description = "Adaptive Reasoning Semantic Language Model - Lightweight AI engine for intelligent response generation"
+description = "Adaptive Reasoning Semantic Language Model - Lightweight AI engine"
 readme = "README.md"
-authors = [
-    { name = "Benjamin Amaad Kama", email = "benjokama@hotmail.fr" }
-]
-maintainers = [
-    { name = "Benjamin Amaad Kama", email = "benjokama@hotmail.fr" }
-]
-license = { text = "MIT" }
-
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Science/Research",
-    "Intended Audience :: Education",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Text Processing :: Linguistic",
-    "Framework :: FastAPI",
-]
-
-keywords = [
-    "artificial-intelligence",
-    "machine-learning",
-    "natural-language-processing",
-    "language-model",
-    "nlp",
-    "chatbot",
-    "ai",
-    "deep-learning",
-    "transformers",
-    "conversational-ai",
-]
-
+authors = [{name="Benjamin Amaad Kama", email="benjokama@hotmail.fr"}]
 requires-python = ">=3.9"
 
-# =========================
-# CORE DEPENDENCIES (SAFE)
-# =========================
 dependencies = [
+    # Core
     "numpy>=1.21.0,<2.0.0",
+    "torch>=2.0.0",
     "transformers>=4.30.0",
     "tokenizers>=0.13.0",
     "sentencepiece>=0.1.99",
-
+    # API
     "fastapi>=0.100.0",
-    "uvicorn>=0.23.0",
-
+    "uvicorn[standard]>=0.23.0",
     "pydantic>=2.0.0",
     "pydantic-settings>=2.0.0",
-
     "python-multipart>=0.0.6",
     "aiofiles>=23.0.0",
     "httpx>=0.24.0",
-
+    # CLI / utils
     "click>=8.1.0",
+    "rich>=13.0.0",
     "tqdm>=4.65.0",
     "requests>=2.31.0",
-
     "pyyaml>=6.0",
     "python-dotenv>=1.0.0",
-    "rich>=13.0.0",
-    "loguru>=0.7.0",
+    "loguru>=0.7.0"
 ]
 
-# =========================
-# OPTIONAL DEPENDENCIES
-# =========================
 [project.optional-dependencies]
-
-# ML / Training / Inference (OPTIONNEL)
-ml = [
-    "torch>=2.0.0",
-]
-
-# Streamlit UI (Vercel / Local)
-streamlit = [
-    "streamlit>=1.25.0",
-    "pandas>=2.0.0",
-    "plotly>=5.15.0",
-    "altair>=5.0.0",
-]
-
-# Dev tools
 dev = [
     "pytest>=7.4.0",
-    "pytest-cov>=4.1.0",
-    "pytest-asyncio>=0.21.0",
-    "pytest-mock>=3.11.0",
-    "pytest-xdist>=3.3.0",
     "black>=23.7.0",
     "isort>=5.12.0",
-    "mypy>=1.5.0",
-    "pylint>=2.17.0",
-    "bandit>=1.7.5",
-    "pre-commit>=3.3.0",
-    "ipython>=8.12.0",
-    "ipdb>=0.13.13",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0"
 ]
-
-# Documentation
-docs = [
-    "mkdocs>=1.5.0",
-    "mkdocs-material>=9.2.0",
-    "mkdocstrings[python]>=0.22.0",
-    "mkdocs-autorefs>=0.5.0",
-    "mkdocs-gen-files>=0.5.0",
-    "mkdocs-literate-nav>=0.6.0",
-    "mkdocs-section-index>=0.3.0",
-    "markdown-include>=0.8.1",
-]
-
-# Jupyter / Research
-jupyter = [
-    "jupyter>=1.0.0",
-    "notebook>=7.0.0",
-    "ipywidgets>=8.0.0",
-    "matplotlib>=3.7.0",
-    "seaborn>=0.12.0",
-]
-
-# Database
-database = [
-    "sqlalchemy>=2.0.0",
-    "alembic>=1.11.0",
-    "psycopg2-binary>=2.9.0",
-    "redis>=4.6.0",
-]
-
-# Monitoring
-monitoring = [
-    "prometheus-client>=0.17.0",
-    "opentelemetry-api>=1.19.0",
-    "opentelemetry-sdk>=1.19.0",
-]
-
-# All-in-one
-all = [
-    "arslm[ml,streamlit,dev,docs,jupyter,database,monitoring]",
-]
-
-# =========================
-# URLS
-# =========================
-[project.urls]
-Homepage = "https://github.com/benjaminpolydeq/ARSLM"
-Documentation = "https://arslm.readthedocs.io"
-Repository = "https://github.com/benjaminpolydeq/ARSLM"
-"Bug Tracker" = "https://github.com/benjaminpolydeq/ARSLM/issues"
-Changelog = "https://github.com/benjaminpolydeq/ARSLM/blob/main/CHANGELOG.md"
-
-# =========================
-# CLI SCRIPTS
-# =========================
-[project.scripts]
-arslm = "arslm.cli.commands:main"
-arslm-server = "arslm.api.server:run_server"
-arslm-train = "arslm.cli.train:train_cli"
-arslm-eval = "arslm.cli.evaluate:eval_cli"
-
-# =========================
-# SETUPTOOLS
-# =========================
-[tool.setuptools]
-package-dir = { "" = "." }
-zip-safe = false
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["arslm*"]
-exclude = ["tests*", "docs*", "examples*"]
+where=["."]
+include=["arslm*"]
+exclude=["tests*", "docs*", "examples*"]
 
-[tool.setuptools.package-data]
-arslm = [
-    "py.typed",
-    "*.json",
-    "*.yaml",
-    "*.yml",
-    "models/*.pt",
-    "models/*.bin",
-    "config/*.json",
-]
-
-# =========================
-# TOOLING
-# =========================
-[tool.black]
-line-length = 88
-target-version = ["py39", "py310", "py311", "py312"]
-
-[tool.isort]
-profile = "black"
-line_length = 88
-
-[tool.pytest.ini_options]
-minversion = "7.0"
-testpaths = ["tests"]
-
-[tool.mypy]
-python_version = "3.9"
-ignore_missing_imports = true
-
-[tool.coverage.run]
-source = ["arslm"]
-omit = ["tests/*"]
-
-[tool.pylint.messages_control]
-disable = ["C0111", "C0103", "R0913"]
-
-[tool.bandit]
-exclude_dirs = ["tests", "examples"]
-skips = ["B101", "B601"]
+[project.scripts]
+arslm="arslm.cli.commands:main"
+arslm-server="arslm.api.server:run_server"
+arslm-train="arslm.cli.train:train_cli"
+arslm-eval="arslm.cli.evaluate:eval_cli"
