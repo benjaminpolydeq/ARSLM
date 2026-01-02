@@ -1,45 +1,30 @@
-import streamlit as st
-from ARSLM import ARSLM
+# main.py pour Termux / ARSLM
+# Version prête à lancer, corrections de syntaxe incluses
 
-# Configuration de la page
-st.set_page_config(page_title="ARSLM Prototype", page_icon="🤖", layout="centered")
-st.title("🤖 ARSLM — Prototype LLM")
-st.markdown("Testez le modèle ARSLM avec du texte ou un fichier `.txt`")
+# Import des modules ARSLM
+import sys
+import os
 
-# Initialisation du modèle
-model = ARSLM()
+# Ajouter le dossier ARSLM au PYTHONPATH si ce n'est pas déjà fait
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
 
-# Sidebar pour options d'entrée
-st.sidebar.header("Options d'entrée")
-input_method = st.sidebar.radio("Mode d'entrée", ["Texte direct", "Fichier .txt"])
+# Import des sous-modules
+from arslm import arslm
+# Importer d'autres modules selon ton usage
+# from arslm import arslm_engine
+# from arslm import arslm_init
+# from arslm import api, cli, utils, core
 
-text = ""
+def main():
+    """
+    Fonction principale pour tester ARSLM sur Termux.
+    """
+    print("ARSLM est prêt à l'utilisation !")
+    # Exemple : appeler une fonction de arslm si elle existe
+    # arslm.some_function()
 
-# Choix de l'entrée
-if input_method == "Texte direct":
-    text = st.text_area("Entrez votre texte ici", height=200)
-else:
-    uploaded_file = st.file_uploader("Uploader un fichier `.txt`", type=["txt"])
-    if uploaded_file is not None:
-        try:
-            text = uploaded_file.read().decode("utf-8")
-        except Exception as e:
-            st.error(f"Erreur lors de la lecture du fichier : {e}")
+if __name__ == "__main__":
+    main()
 
-# Bouton de prédiction
-if st.button("Prédire"):
-    if text.strip() == "":
-        st.warning("Aucun texte fourni.")
-    else:
-        try:
-            result = model.predict([text])
-            st.success("Résultat du modèle :")
-            st.write(result)
-        except Exception as e:
-            st.error(f"Erreur lors de la prédiction : {e}")
-
-# Footer
-st.markdown("---")
-st.markdown("ARSLM Prototype — Développé par Benjamin Kama")
-
-Add final version of main.py for Streamlit

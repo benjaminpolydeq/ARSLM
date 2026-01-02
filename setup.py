@@ -57,7 +57,7 @@ AUTHOR = 'Benjamin Amaad Kama'
 AUTHOR_EMAIL = 'benjokama@hotmail.fr'
 URL = 'https://github.com/benjaminpolydeq/ARSLM'
 LICENSE = 'MIT'
-PYTHON_REQUIRES = '>=3.8'
+PYTHON_REQUIRES = '>=3.9'
 
 # Core dependencies
 INSTALL_REQUIRES = [
@@ -132,7 +132,7 @@ CLASSIFIERS = [
     'License :: OSI Approved :: MIT License',
     'Operating System :: OS Independent',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.8',
+    
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
