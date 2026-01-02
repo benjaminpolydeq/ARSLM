@@ -1,5 +1,5 @@
 # ================================
-# streamlit_app.py – ARSLM SaaS
+# 🔹 streamlit_app.py – ARSLM SaaS Ready
 # ================================
 
 import streamlit as st
@@ -8,36 +8,37 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 
 # ================================
-# ⚙️ CONFIGURATION DES CHEMINS
+# ⚙️ Config
 # ================================
-BASE_MODEL_PATH = "./distilgpt2"      # modèle de base
-LORA_MODEL_PATH = "./arslm_lora"      # modèle fine-tuné avec LoRA
+MODEL_PATH = "./model_checkpoint"     # chemin vers ton modèle fine-tuné
+TOKENIZER_PATH = "./tokenizer_checkpoint"
+
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # ================================
-# 🔤 CHARGEMENT TOKENIZER & MODELE
+# 🔹 Charger modèle et tokenizer
 # ================================
-@st.cache_resource
+@st.cache_resource(show_spinner=True)
 def load_model():
-    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH)
-    model = AutoModelForCausalLM.from_pretrained(BASE_MODEL_PATH)
-    # Charger le fine-tuning LoRA
-    model = PeftModel.from_pretrained(model, LORA_MODEL_PATH)
+    tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_PATH)
+    
+    # Si tu as utilisé LoRA
+    base_model = AutoModelForCausalLM.from_pretrained(MODEL_PATH.replace("_lora",""), device_map="auto")
+    model = PeftModel.from_pretrained(base_model, MODEL_PATH)
+    
     model.to(DEVICE)
     model.eval()
+    
     return tokenizer, model
 
 tokenizer, model = load_model()
 
 # ================================
-# ▶️ GENERATION DE REPONSES
+# 🔹 Génération de réponse
 # ================================
 def generate_response(user_input, max_length=200, temperature=0.8, top_p=0.9):
-    """
-    Génère une réponse en anglais depuis le modèle ARSLM LoRA.
-    """
     prompt = f"You are ARSLM, an intelligent and friendly assistant that speaks English.\nUser: {user_input}\nARSLM:"
-
+    
     inputs = tokenizer(prompt, return_tensors="pt").to(DEVICE)
     outputs = model.generate(
         **inputs,
@@ -47,22 +48,20 @@ def generate_response(user_input, max_length=200, temperature=0.8, top_p=0.9):
         top_p=top_p,
         pad_token_id=tokenizer.eos_token_id
     )
+    
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     response = response.split("ARSLM:")[-1].strip()
     return response
 
 # ================================
-# 🖥 INTERFACE STREAMLIT
+# 🔹 Streamlit Interface
 # ================================
-st.set_page_config(page_title="ARSLM – MicroLLM SaaS", page_icon="🤖")
+st.title("🤖 ARSLM - MicroLLM SaaS")
+st.write("ARSLM est prêt à discuter en anglais !")
 
-st.title("🤖 ARSLM – MicroLLM SaaS")
-st.markdown("ARSLM is your intelligent, LoRA fine-tuned assistant (English).")
+user_input = st.text_input("💬 Pose une question à ARSLM :")
 
-# Champ de texte utilisateur
-user_input = st.text_input("Enter your message:", "")
-
-if st.button("Send") and user_input:
-    with st.spinner("Generating response..."):
+if st.button("Envoyer") and user_input.strip() != "":
+    with st.spinner("ARSLM réfléchit..."):
         answer = generate_response(user_input)
-    st.markdown(f"**ARSLM:** {answer}")
+        st.markdown(f"**ARSLM:** {answer}")
