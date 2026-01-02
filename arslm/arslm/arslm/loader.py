@@ -13,3 +13,4 @@ def load_model(adapter):
 
     _cache[adapter] = model
     return model
+
