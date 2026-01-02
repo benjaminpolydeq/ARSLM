@@ -8,12 +8,13 @@ version = "0.1.0"
 description = "Adaptive Reasoning Semantic Language Model - Lightweight AI engine for intelligent response generation"
 readme = "README.md"
 authors = [
-    {name = "Benjamin Amaad Kama", email = "benjokama@hotmail.fr"}
+    { name = "Benjamin Amaad Kama", email = "benjokama@hotmail.fr" }
 ]
 maintainers = [
-    {name = "Benjamin Amaad Kama", email = "benjokama@hotmail.fr"}
+    { name = "Benjamin Amaad Kama", email = "benjokama@hotmail.fr" }
 ]
-license = {text = "MIT"}
+license = { text = "MIT" }
+
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -31,6 +32,7 @@ classifiers = [
     "Topic :: Text Processing :: Linguistic",
     "Framework :: FastAPI",
 ]
+
 keywords = [
     "artificial-intelligence",
     "machine-learning",
@@ -41,34 +43,59 @@ keywords = [
     "ai",
     "deep-learning",
     "transformers",
-    "attention-mechanism",
-    "recurrent-neural-networks",
     "conversational-ai",
 ]
+
 requires-python = ">=3.9"
+
+# =========================
+# CORE DEPENDENCIES (SAFE)
+# =========================
 dependencies = [
     "numpy>=1.21.0,<2.0.0",
-    "torch>=2.0.0",
     "transformers>=4.30.0",
     "tokenizers>=0.13.0",
     "sentencepiece>=0.1.99",
+
     "fastapi>=0.100.0",
-    "uvicorn[standard]>=0.23.0",
+    "uvicorn>=0.23.0",
+
     "pydantic>=2.0.0",
     "pydantic-settings>=2.0.0",
+
     "python-multipart>=0.0.6",
     "aiofiles>=23.0.0",
     "httpx>=0.24.0",
+
     "click>=8.1.0",
     "tqdm>=4.65.0",
     "requests>=2.31.0",
+
     "pyyaml>=6.0",
     "python-dotenv>=1.0.0",
     "rich>=13.0.0",
     "loguru>=0.7.0",
 ]
 
+# =========================
+# OPTIONAL DEPENDENCIES
+# =========================
 [project.optional-dependencies]
+
+# ML / Training / Inference (OPTIONNEL)
+ml = [
+    "torch>=2.0.0",
+]
+
+# Streamlit UI (Vercel / Local)
+streamlit = [
+    "streamlit>=1.25.0",
+    "pandas>=2.0.0",
+    "plotly>=5.15.0",
+    "altair>=5.0.0",
+]
+
+# Dev tools
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
@@ -84,6 +111,8 @@ dev = [
     "ipython>=8.12.0",
     "ipdb>=0.13.13",
 ]
+
+# Documentation
 docs = [
     "mkdocs>=1.5.0",
     "mkdocs-material>=9.2.0",
@@ -94,12 +123,8 @@ docs = [
     "mkdocs-section-index>=0.3.0",
     "markdown-include>=0.8.1",
 ]
-streamlit = [
-    "streamlit>=1.25.0",
-    "plotly>=5.15.0",
-    "pandas>=2.0.0",
-    "altair>=5.0.0",
-]
+
+# Jupyter / Research
 jupyter = [
     "jupyter>=1.0.0",
     "notebook>=7.0.0",
@@ -107,37 +132,51 @@ jupyter = [
     "matplotlib>=3.7.0",
     "seaborn>=0.12.0",
 ]
+
+# Database
 database = [
     "sqlalchemy>=2.0.0",
     "alembic>=1.11.0",
     "psycopg2-binary>=2.9.0",
     "redis>=4.6.0",
 ]
+
+# Monitoring
 monitoring = [
     "prometheus-client>=0.17.0",
     "opentelemetry-api>=1.19.0",
     "opentelemetry-sdk>=1.19.0",
 ]
+
+# All-in-one
 all = [
-    "arslm[dev,docs,streamlit,jupyter,database,monitoring]",
+    "arslm[ml,streamlit,dev,docs,jupyter,database,monitoring]",
 ]
 
+# =========================
+# URLS
+# =========================
 [project.urls]
 Homepage = "https://github.com/benjaminpolydeq/ARSLM"
 Documentation = "https://arslm.readthedocs.io"
 Repository = "https://github.com/benjaminpolydeq/ARSLM"
 "Bug Tracker" = "https://github.com/benjaminpolydeq/ARSLM/issues"
-"Source Code" = "https://github.com/benjaminpolydeq/ARSLM"
 Changelog = "https://github.com/benjaminpolydeq/ARSLM/blob/main/CHANGELOG.md"
 
+# =========================
+# CLI SCRIPTS
+# =========================
 [project.scripts]
 arslm = "arslm.cli.commands:main"
 arslm-server = "arslm.api.server:run_server"
 arslm-train = "arslm.cli.train:train_cli"
 arslm-eval = "arslm.cli.evaluate:eval_cli"
 
+# =========================
+# SETUPTOOLS
+# =========================
 [tool.setuptools]
-package-dir = {"" = "."}
+package-dir = { "" = "." }
 zip-safe = false
 
 [tool.setuptools.packages.find]
@@ -156,99 +195,32 @@ arslm = [
     "config/*.json",
 ]
 
+# =========================
+# TOOLING
+# =========================
 [tool.black]
 line-length = 88
-target-version = ['py38', 'py39', 'py310', 'py311']
-include = '\.pyi?$'
-extend-exclude = '''
-/(
-  # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | build
-  | dist
-)/
-'''
+target-version = ["py39", "py310", "py311", "py312"]
 
 [tool.isort]
 profile = "black"
 line_length = 88
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-ensure_newline_before_comments = true
-skip_gitignore = true
 
 [tool.pytest.ini_options]
 minversion = "7.0"
 testpaths = ["tests"]
-python_files = "test_*.py"
-python_classes = "Test*"
-python_functions = "test_*"
-addopts = [
-    "-v",
-    "-ra",
-    "--strict-markers",
-    "--strict-config",
-    "--cov=arslm",
-    "--cov-report=html",
-    "--cov-report=term-missing",
-    "--cov-report=xml",
-]
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: marks tests as integration tests",
-    "unit: marks tests as unit tests",
-]
 
 [tool.mypy]
-python_version = "3.8"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = false
-no_implicit_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_no_return = true
-follow_imports = "normal"
+python_version = "3.9"
 ignore_missing_imports = true
-strict_equality = true
 
 [tool.coverage.run]
 source = ["arslm"]
-omit = [
-    "tests/*",
-    "**/__init__.py",
-    "**/conftest.py",
-]
-
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "raise AssertionError",
-    "raise NotImplementedError",
-    "if __name__ == .__main__.:",
-    "if TYPE_CHECKING:",
-    "@abstractmethod",
-]
+omit = ["tests/*"]
 
 [tool.pylint.messages_control]
-disable = [
-    "C0111", # missing-docstring
-    "C0103", # invalid-name
-    "R0913", # too-many-arguments
-]
+disable = ["C0111", "C0103", "R0913"]
 
 [tool.bandit]
 exclude_dirs = ["tests", "examples"]
 skips = ["B101", "B601"]
-
