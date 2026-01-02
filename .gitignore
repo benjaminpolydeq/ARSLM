@@ -1,10 +1,15 @@
-# Fichiers Python compilés
+# Python virtual env
+.venv/
+venv/
+
+# Python cache
 __pycache__/
 *.pyc
+*.pyo
 
-# Dossiers et fichiers virtuels
-venv/
-.env
+# Pip / dist
+*.dist-info/
+=*
 
-# Fichiers de licences locales
-licences.json
+# OS / éditeurs
+.DS_Store
