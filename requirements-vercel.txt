@@ -1,8 +1,11 @@
-# Streamlit app ONLY (Vercel-safe, no native builds)
-
+# apps/streamlit/requirements-vercel.txt
 streamlit==1.32.2
 pandas==2.1.4
 numpy==1.26.4
 altair==5.2.0
 plotly==5.18.0
 requests>=2.31.0
+rich>=13.0.0
+tqdm>=4.65.0
+click>=8.1.0
+python-dotenv>=1.0.0
