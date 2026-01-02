@@ -30,3 +30,4 @@ class ARSLM:
         Efface l'historique de conversation
         """
         self.engine.clear_history()
+
