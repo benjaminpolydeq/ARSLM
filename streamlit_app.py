@@ -1,58 +1,56 @@
-# ================================
-# streamlit_app.py – ARSLM isolé
-# ================================
+%%writefile streamlit_app.py
 
 import streamlit as st
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from peft import PeftModel
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+import os
 
-# 🔹 Chemins vers ton modèle LoRA
-MODEL_PATH = "./arslm_lora"
-TOKENIZER_PATH = "./arslm_lora"
+# Define the path to the fine-tuned model
+model_dir = './arslm_lora'
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
+st.title('ARSLM Text Generation Demo')
+st.write('Enter a prompt and let the ARSLM model generate text!')
 
-# 🔹 Charger le tokenizer et le modèle
-@st.cache_resource(show_spinner=True)
+@st.cache_resource
 def load_model():
-    tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_PATH)
-    base_model = AutoModelForCausalLM.from_pretrained(MODEL_PATH)
-    model = PeftModel.from_pretrained(base_model, MODEL_PATH)
-    model.to(device)
-    model.eval()
-    return tokenizer, model
+    if not os.path.exists(model_dir):
+        st.error(f"Error: Model directory '{model_dir}' not found. Please ensure the fine-tuning process was completed.")
+        return None, None
+    
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(model_dir)
+        model = AutoModelForCausalLM.from_pretrained(model_dir)
+        # Ensure pad_token_id is set for generation
+        if tokenizer.pad_token_id is None:
+            tokenizer.pad_token_id = tokenizer.eos_token_id
 
-tokenizer, model = load_model()
+        generator = pipeline('text-generation', model=model, tokenizer=tokenizer)
+        return generator, tokenizer
+    except Exception as e:
+        st.error(f"Error loading model or tokenizer: {e}")
+        return None, None
 
-# 🔹 Fonction pour générer des réponses
-def generate_response(prompt_text, max_length=200, temperature=0.8, top_p=0.9):
-    prompt = f"You are ARSLM, an intelligent English assistant.\nUser: {prompt_text}\nARSLM:"
-    inputs = tokenizer(prompt, return_tensors="pt").to(device)
-    outputs = model.generate(
-        **inputs,
-        max_length=max_length,
-        do_sample=True,
-        temperature=temperature,
-        top_p=top_p,
-        pad_token_id=tokenizer.eos_token_id
-    )
-    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    response = response.split("ARSLM:")[-1].strip()
-    return response
+generator, tokenizer = load_model()
 
-# ================================
-# 🔹 Streamlit UI
-# ================================
-st.set_page_config(page_title="ARSLM Test Interface", layout="centered")
-st.title("🤖 ARSLM – Test English Responses")
+if generator:
+    prompt = st.text_area('Your Prompt:', 'The future of artificial intelligence is')
+    max_new_tokens = st.slider('Max New Tokens:', 10, 200, 50)
+    temperature = st.slider('Temperature (creativity):', 0.1, 2.0, 0.7)
+    top_k = st.slider('Top-K (diversity):', 0, 100, 50)
 
-user_input = st.text_area("Enter your message:", "")
-
-if st.button("Send"):
-    if user_input.strip() != "":
-        with st.spinner("Generating response..."):
-            reply = generate_response(user_input)
-        st.markdown(f"**ARSLM:** {reply}")
-    else:
-        st.warning("Please enter a message to send.")
+    if st.button('Generate Text'):
+        if prompt:
+            with st.spinner('Generating...'):
+                generated_text = generator(
+                    prompt,
+                    max_new_tokens=max_new_tokens,
+                    num_return_sequences=1,
+                    pad_token_id=tokenizer.pad_token_id,
+                    temperature=temperature,
+                    top_k=top_k
+                )
+                st.subheader('Generated Text:')
+                st.write(generated_text[0]['generated_text'])
+        else:
+            st.warning('Please enter a prompt.')
+else:
+    st.warning('Model not loaded. Please ensure fine-tuning was successful and the model directory exists.')
