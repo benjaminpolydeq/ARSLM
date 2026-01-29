@@ -1,17 +1,32 @@
-# Python virtual env / Environnements virtuels Python
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# API/IDE
+.vscode/
+.idea/
+*.swp
+
+# Environnements virtuels
 .venv/
+env/
 venv/
 
-# Python cache
-__pycache__/
-*.pyc
-*.pyo
+# Notebooks & temp
+.ipynb_checkpoints/
+*.checkpoint
+*.bak
 
-# Pip / dist
-*.dist-info/
-=*
-
-# OS / éditeurs
+# OS
 .DS_Store
 Thumbs.db
-*.swp
+
+# Secrets
+*.env
+*.pkl
+*.h5
