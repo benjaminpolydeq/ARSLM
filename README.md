@@ -1,4 +1,4 @@
-# 🧠 ARSLM - Adaptive Reasoning Semantic Language Model
+# 🧠 ARSLM - Adaptive Recurent State Language Model
 
 [![Version](https://img.shields.io/badge/version-1.0.0--MVP-blue.svg)](https://github.com/benjaminpolydeq/ARSLM)
 [![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/)
