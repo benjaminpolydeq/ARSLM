@@ -47,11 +47,10 @@ jobs:
     - name: Type check with mypy
       run: |
         mypy arslm/ --ignore-missing-imports
-      continue-on-error: true
     
     - name: Run tests with pytest
       run: |
-        pytest tests/ -v --cov=arslm --cov-report=xml --cov-report=term-missing
+        pytest tests/ -q --cov=src --cov-report=term-missing
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
@@ -80,12 +79,10 @@ jobs:
     - name: Run security scan with bandit
       run: |
         bandit -r arslm/ -f json -o bandit-report.json
-      continue-on-error: true
     
     - name: Check dependencies with safety
       run: |
         safety check --json
-      continue-on-error: true
 
   build:
     runs-on: ubuntu-latest
