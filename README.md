@@ -1,195 +1,145 @@
 # 🧠 ARSLM — Adaptive Recurrent State Language Model
 
-![Version](https://img.shields.io/badge/version-1.0.0--MVP-blue)
-![Python](https://img.shields.io/badge/python-3.10%2B-green)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![Status](https://img.shields.io/badge/status-experimental-yellow)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Status](https://img.shields.io/badge/status-MVP-yellow)
 
-**A sequential language model combining adaptive recurrent networks and attention mechanisms —  
-designed for on-premise deployment in businesses and institutions worldwide.**
+**A lightweight language model built from scratch**, combining adaptive recurrent networks and attention mechanisms.
 
----
-
-## 🌟 Overview
-
-**ARSLM** (**A**daptive **R**ecurrent **S**tate **L**anguage **M**odel) is a lightweight, modular AI engine that adapts in real time to dynamic data streams. It combines:
-
-- 🔁 **Adaptive Recurrent Networks** — captures long-range dependencies across sequences
-- 🎯 **Attention Mechanisms** — focuses on the most relevant context at each step
-- 🧠 **RAG (Retrieval-Augmented Generation)** — grounds responses in real documents via FAISS
-- 🔧 **LoRA Fine-tuning** — domain adaptation with minimal compute
-
-ARSLM runs entirely **on-premise** — your data never leaves your infrastructure.
+> This is **not** a wrapper around Mistral, Llama or any external LLM.  
+> ARSLM is a custom hybrid architecture designed for research, education and lightweight on-device / on-premise experiments.
 
 ---
 
-## 🗂️ Project Structure
+## Why from-scratch?
+
+Most small projects today just fine-tune or wrap existing large models.  
+ARSLM takes the opposite approach:
+
+- Full control over the architecture
+- Transparent and educational codebase
+- Suitable for experimentation with hybrid Recurrent + Attention designs
+- Small enough to train and run on modest hardware
+
+---
+
+## Architecture
 
 ```
-ARSLM/
-├── arslm/
-│   ├── __init__.py        ← Package init (exports ARSLMEngine, RAGIndex, ARSLMTrainer)
-│   ├── engine.py          ← Core AI engine: model loading, LoRA, RAG, generation
-│   └── trainer.py         ← LoRA fine-tuning pipeline (SFTTrainer)
-├── microllm_core.py       ← Session & conversation manager
-├── app.py                 ← Streamlit web interface
-├── main.py                ← CLI entry point (launch / train / index)
-├── requirements.txt
-├── .gitignore
-├── LICENSE
-└── README.md
+Input tokens
+    ↓
+Token + Position Embeddings
+    ↓
+┌─────────────────────────────────────┐
+│  ARSLM Block  (× N layers)          │
+│  ┌─────────────┐   ┌──────────────┐ │
+│  │  Adaptive   │ → │  Attention   │ │
+│  │  Recurrent  │   │  (Multi-Head │ │
+│  │  (LSTM/GRU) │   │   / Adaptive)│ │
+│  └─────────────┘   └──────────────┘ │
+│           ↓ residual + FFN          │
+└─────────────────────────────────────┘
+    ↓
+Final LayerNorm → LM Head → logits
+```
+
+Key ideas:
+- **Adaptive Recurrent blocks** capture sequential state
+- **Attention** (standard, adaptive or local) provides content-based focus
+- Residual connections + LayerNorm for stable training
+
+---
+
+## Project structure (clean target)
+
+```
+arslm/
+├── __init__.py          # exports ARSLM, ARSLMConfig
+├── config.py            # hyperparameters
+├── model.py             # main from-scratch model
+└── core/
+    ├── attention.py     # MultiHead, Adaptive, Local attention
+    └── recurrent.py     # Adaptive LSTM / GRU / RNN
 ```
 
 ---
 
-## 🚀 Installation
+## Quick start
 
 ```bash
 git clone https://github.com/benjaminpolydeq/ARSLM.git
 cd ARSLM
 
-python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
 
-pip install -r requirements.txt
+pip install torch
+# (optional) pip install -e .
 ```
 
----
-
-## ▶️ Quick Start
-
-### Launch the web interface
-
-```bash
-streamlit run app.py
-```
-
-Open your browser at `http://localhost:8501`.
-
-### Launch via CLI (with optional training)
-
-```bash
-# Just launch the UI
-python main.py
-
-# Fine-tune LoRA then launch
-python main.py --train
-
-# Build RAG index only
-python main.py --index-only
-```
-
----
-
-## ⚙️ Configuration
-
-All settings are controlled via environment variables (create a `.env` file):
-
-```env
-ARSLM_MODEL_ID=mistralai/Mistral-7B-Instruct-v0.2
-ARSLM_MODEL_PATH=./arslm_lora
-ARSLM_INDEX_PATH=./arslm_index
-ARSLM_DRIVE_PATH=/content/drive/MyDrive/ARSLM/arslm_lora
-```
-
----
-
-## 🐍 Python API
+### Create a small model and run a forward pass
 
 ```python
-from arslm import ARSLMEngine
+import torch
+from arslm import ARSLM, ARSLMConfig
 
-engine = ARSLMEngine(
-    model_id="mistralai/Mistral-7B-Instruct-v0.2",
-    index_path="./arslm_index",
+config = ARSLMConfig(
+    vocab_size=1000,
+    hidden_size=128,
+    num_layers=2,
+    num_attention_heads=4,
+    max_position_embeddings=128,
 )
 
-response = engine.generate(
-    prompt="What are the rights of an accused person?",
-    domain="legal",
-    max_new_tokens=300,
-)
-print(response)
+model = ARSLM(config)
+print(f"Parameters: {model.get_num_params():,}")
+
+input_ids = torch.randint(0, 1000, (2, 32))  # batch=2, seq=32
+outputs = model(input_ids)
+print(outputs["logits"].shape)  # (2, 32, 1000)
 ```
 
-### With session management
+### Simple generation
 
 ```python
-from microllm_core import MicroLLMCore
-
-core = MicroLLMCore(engine)
-reply = core.chat("Explain custody procedure", session_id="user42", domain="police")
-print(reply)
-print(core.get_history("user42"))
-```
-
-### Fine-tuning
-
-```python
-from arslm import ARSLMTrainer
-from datasets import Dataset
-
-trainer = ARSLMTrainer(engine=engine, output_dir="./arslm_lora")
-
-# Load wikitext (no /tmp/ dependency — safe across Colab sessions)
-passages = ARSLMTrainer.load_wikitext(n=10_000)
-engine.rag.build_index(passages)
-
-# Fine-tune on domain data
-data = Dataset.from_list([
-    {"text": "[Domain: legal] Q: ... A: ..."},
-])
-trainer.train(data, epochs=3)
+prompt = torch.randint(0, 1000, (1, 10))
+generated = model.generate(prompt, max_new_tokens=20, temperature=0.8)
+print(generated.shape)
 ```
 
 ---
 
-## 🏗️ Architecture
+## Current status
 
-```
-┌─────────────────────────────────────────────────┐
-│           Streamlit Interface  (app.py)          │
-└──────────────────────┬──────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────┐
-│        MicroLLM Core  (microllm_core.py)         │
-│    Session Manager  │  Conversation History      │
-└──────────────────────┬──────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────┐
-│          ARSLM Engine  (arslm/engine.py)         │
-│                                                  │
-│  ┌─────────────┐  ┌───────────┐  ┌───────────┐  │
-│  │  Recurrent  │  │ Attention │  │    RAG    │  │
-│  │    State    │→ │ Mechanism │→ │  (FAISS)  │  │
-│  │   (LoRA)    │  │           │  │           │  │
-│  └─────────────┘  └───────────┘  └───────────┘  │
-└─────────────────────────────────────────────────┘
-```
+| Component              | Status          |
+|------------------------|-----------------|
+| Core attention modules | ✅ Implemented  |
+| Core recurrent modules | ✅ Implemented  |
+| Main `ARSLM` model     | ✅ From-scratch |
+| Config system          | ✅ Done         |
+| Training loop          | 🚧 Planned      |
+| Tokenizer              | 🚧 Planned      |
+| Proper packaging       | 🚧 In progress  |
+| Tests                  | 🚧 Partial      |
 
-| Component | Role |
-|---|---|
-| **Recurrent State (LoRA)** | Adapts the base LLM to your domain via lightweight fine-tuning |
-| **Attention Mechanism** | Focuses generation on the most relevant tokens in context |
-| **RAG / FAISS** | Retrieves real documents to ground and enrich every response |
-| **MicroLLM Core** | Manages user sessions and conversation history |
-| **Streamlit UI** | Simple, secure web interface — runs locally |
+This repository is under active cleanup and refactoring toward a clean from-scratch design.
 
 ---
 
-## 🔒 Security Notes
+## Roadmap (short term)
 
-- **No public tunnel**: the Streamlit interface runs locally (`localhost:8501`)
-- **Secrets via env vars**: never hardcode credentials in source code
-- **Model weights excluded from Git**: add `arslm_lora/` to `.gitignore` ✅
-
----
-
-## 📄 License
-
-MIT License — Copyright © 2025 Benjamin Amaad Kama.  
-See [LICENSE](LICENSE) for full terms.
+1. Finish repository cleanup (remove legacy wrapper code & committed `.venv`)
+2. Add a minimal training script
+3. Add unit tests for the core blocks
+4. Publish a small pre-trained toy checkpoint (optional)
+5. Clean packaging (`pyproject.toml` + `pip install -e .`)
 
 ---
 
-**Made with ❤️ by Benjamin Amaad Kama**
+## License
+
+MIT License — Copyright © 2025 Benjamin Amaad Kama.
+
+---
+
+**Built as a from-scratch experiment by Benjamin Amaad Kama**

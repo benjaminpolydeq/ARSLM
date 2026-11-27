@@ -1,32 +1,66 @@
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 *.so
-*.egg
-*.egg-info/
-dist/
+.Python
 build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
 
-# API/IDE
-.vscode/
+# Model weights, checkpoints & indices
+arslm_lora/
+arslm_index/
+checkpoints/
+*.bin
+*.safetensors
+*.gguf
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.h5
+
+# IDE & editors
 .idea/
+.vscode/
 *.swp
-
-# Environnements virtuels
-.venv/
-env/
-venv/
-
-# Notebooks & temp
-.ipynb_checkpoints/
-*.checkpoint
-*.bak
+*.swo
+*~
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Secrets
-*.env
-*.pkl
-*.h5
+# Secrets & credentials
+.env
+.env.*
+!.env.example
+.pypirc
+*.pem
+credentials*
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Tests & coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local / temp
+*.log
+tmp/
+temp/
+*.bak
+*_backup*
